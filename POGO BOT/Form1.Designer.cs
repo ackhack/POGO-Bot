@@ -32,16 +32,22 @@ namespace POGO_BOT
             this.btnPic = new System.Windows.Forms.Button();
             this.pbResult = new System.Windows.Forms.PictureBox();
             this.pnlColor = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cbToss = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblMons = new System.Windows.Forms.Label();
             this.lblStops = new System.Windows.Forms.Label();
+            this.btnInit = new System.Windows.Forms.Button();
+            this.lblInstruct = new System.Windows.Forms.Label();
+            this.btninstruct = new System.Windows.Forms.Button();
+            this.btnRedo = new System.Windows.Forms.Button();
+            this.lblRelease = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbResult)).BeginInit();
             this.SuspendLayout();
             // 
             // btnPic
             // 
+            this.btnPic.Enabled = false;
             this.btnPic.Location = new System.Drawing.Point(13, 24);
             this.btnPic.Name = "btnPic";
             this.btnPic.Size = new System.Drawing.Size(124, 75);
@@ -67,17 +73,17 @@ namespace POGO_BOT
             this.pnlColor.TabIndex = 2;
             this.pnlColor.DoubleClick += new System.EventHandler(this.PnlColor_DoubleClick);
             // 
-            // checkBox1
+            // cbToss
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(13, 331);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(61, 21);
-            this.checkBox1.TabIndex = 3;
-            this.checkBox1.Text = "Toss";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbToss.AutoSize = true;
+            this.cbToss.Checked = true;
+            this.cbToss.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbToss.Location = new System.Drawing.Point(13, 331);
+            this.cbToss.Name = "cbToss";
+            this.cbToss.Size = new System.Drawing.Size(145, 21);
+            this.cbToss.TabIndex = 3;
+            this.cbToss.Text = "Toss (not reliable)";
+            this.cbToss.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -115,16 +121,77 @@ namespace POGO_BOT
             this.lblStops.TabIndex = 7;
             this.lblStops.Text = "0";
             // 
+            // btnInit
+            // 
+            this.btnInit.Location = new System.Drawing.Point(16, 471);
+            this.btnInit.Name = "btnInit";
+            this.btnInit.Size = new System.Drawing.Size(142, 81);
+            this.btnInit.TabIndex = 8;
+            this.btnInit.Text = "Init Screen";
+            this.btnInit.UseVisualStyleBackColor = true;
+            this.btnInit.Click += new System.EventHandler(this.BtnInit_Click);
+            // 
+            // lblInstruct
+            // 
+            this.lblInstruct.AutoSize = true;
+            this.lblInstruct.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
+            this.lblInstruct.Location = new System.Drawing.Point(363, 76);
+            this.lblInstruct.Name = "lblInstruct";
+            this.lblInstruct.Size = new System.Drawing.Size(191, 39);
+            this.lblInstruct.TabIndex = 9;
+            this.lblInstruct.Text = "Instructions";
+            this.lblInstruct.Visible = false;
+            // 
+            // btninstruct
+            // 
+            this.btninstruct.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.btninstruct.Location = new System.Drawing.Point(193, 76);
+            this.btninstruct.Name = "btninstruct";
+            this.btninstruct.Size = new System.Drawing.Size(164, 74);
+            this.btninstruct.TabIndex = 10;
+            this.btninstruct.Text = "OK";
+            this.btninstruct.UseVisualStyleBackColor = true;
+            this.btninstruct.Visible = false;
+            this.btninstruct.Click += new System.EventHandler(this.Btninstruct_Click);
+            // 
+            // btnRedo
+            // 
+            this.btnRedo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.btnRedo.Location = new System.Drawing.Point(193, 159);
+            this.btnRedo.Name = "btnRedo";
+            this.btnRedo.Size = new System.Drawing.Size(164, 74);
+            this.btnRedo.TabIndex = 11;
+            this.btnRedo.Text = "REDO";
+            this.btnRedo.UseVisualStyleBackColor = true;
+            this.btnRedo.Visible = false;
+            this.btnRedo.Click += new System.EventHandler(this.btnRedo_Click);
+            // 
+            // lblRelease
+            // 
+            this.lblRelease.AutoSize = true;
+            this.lblRelease.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.lblRelease.Location = new System.Drawing.Point(198, 236);
+            this.lblRelease.Name = "lblRelease";
+            this.lblRelease.Size = new System.Drawing.Size(132, 29);
+            this.lblRelease.TabIndex = 12;
+            this.lblRelease.Text = "lblRelease";
+            this.lblRelease.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(886, 940);
+            this.Controls.Add(this.lblRelease);
+            this.Controls.Add(this.btnRedo);
+            this.Controls.Add(this.btninstruct);
+            this.Controls.Add(this.lblInstruct);
+            this.Controls.Add(this.btnInit);
             this.Controls.Add(this.lblStops);
             this.Controls.Add(this.lblMons);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.cbToss);
             this.Controls.Add(this.pnlColor);
             this.Controls.Add(this.pbResult);
             this.Controls.Add(this.btnPic);
@@ -141,11 +208,16 @@ namespace POGO_BOT
         private System.Windows.Forms.Button btnPic;
         private System.Windows.Forms.PictureBox pbResult;
         private System.Windows.Forms.Panel pnlColor;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbToss;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblMons;
         private System.Windows.Forms.Label lblStops;
+        private System.Windows.Forms.Button btnInit;
+        private System.Windows.Forms.Label lblInstruct;
+        private System.Windows.Forms.Button btninstruct;
+        private System.Windows.Forms.Button btnRedo;
+        private System.Windows.Forms.Label lblRelease;
     }
 }
 
