@@ -11,7 +11,8 @@ using System.Windows.Forms;
 using SharpAdbClient;
 using Tesseract;
 
-// check if arena is working
+// arena is not working
+// rocket stop not working
 // get pixels for color check
 // raids
 // make ui actually useable monkaW
@@ -48,6 +49,10 @@ namespace POGO_BOT
         private Point SellItemOK;
         private Point ClickAreaTL;
         private Point ClickAreaBR;
+        private Point FacePixel;
+        private Point BallPixel;
+        private Point NotificationPixel;
+        private Point ArenaPixel;
         #endregion
 
         #region Generic
@@ -66,8 +71,19 @@ namespace POGO_BOT
 
             Show();
 
-            if (Directory.Exists("tmp"))
-                Directory.Delete("tmp", true);
+            try
+            {
+                if (Directory.Exists("tmp"))
+                    Directory.Delete("tmp", true);
+            }
+            catch (Exception) { }
+
+            try
+            {
+                if (!Directory.Exists("tmp"))
+                    Directory.CreateDirectory("tmp");
+            }
+            catch (Exception) { }
 
 #if DEBUG
 
@@ -79,13 +95,12 @@ namespace POGO_BOT
 #endif
             canInit = true;
         }
-
         private bool InitADBPath()
         {
             try
             {
 #if DEBUG
-                adbpath = @"C:\ADB\adb.exe";
+                adbpath = @"\\profiles02\userdata$\fuerbach\Documents\Repos\pogo-bot\POGO BOT\adb\adb.exe";
 #endif
                 if (adbpath == null)
                 {
@@ -120,18 +135,18 @@ namespace POGO_BOT
             try
             {
 #if DEBUG
-                Process MyProcess = new Process
-                {
-                    StartInfo = new ProcessStartInfo("cmd", "/c adb connect 192.168.178.109:5555")
-                    {
-                        UseShellExecute = false
-                    }
-                };
+                //Process MyProcess = new Process
+                //{
+                //    StartInfo = new ProcessStartInfo("cmd", "/c adb connect 192.168.178.109:5555")
+                //    {
+                //        UseShellExecute = false
+                //    }
+                //};
 
-                if (!MyProcess.Start())
-                    UpdateStatus("Connection not successful");
-                MyProcess.WaitForExit();
-                device = cli.GetDevices()[0];
+                //if (!MyProcess.Start())
+                //    UpdateStatus("Connection not successful");
+                //MyProcess.WaitForExit();
+                //device = cli.GetDevices()[0];
 #endif
 
                 if (cli.GetDevices().Count == 0)
@@ -152,6 +167,7 @@ namespace POGO_BOT
 
 
         }
+
         private void BtnPic_Click(object sender, EventArgs e)
         {
             btnInit.Enabled = false;
@@ -166,7 +182,6 @@ namespace POGO_BOT
             if (running)
                 ScanMap();
         }
-
         private void BtnInit_Click(object sender, EventArgs e)
         {
             if (!canInit)
@@ -280,13 +295,21 @@ namespace POGO_BOT
             }
             StartListeningTouch();
         }
-
         private void btnRedo_Click(object sender, EventArgs e)
         {
             lblRelease.Text = "Waiting for new Input";
             StartListeningTouch();
             UpdateStatus("Restarted TouchInput");
         }
+
+        [DebuggerStepThrough]
+        private void UpdateStatus(string str)
+        {
+            System.Diagnostics.Debug.WriteLine(str);
+        }
+        #endregion
+
+        #region Touch Interactions
 
         ConsoleOutputReceiver receiver;
 
@@ -314,8 +337,8 @@ namespace POGO_BOT
         private Point ReadLastTouch()
         {
             lblRelease.Text = "Ready for new Input";
-            string patternX = @"^\[.*\] \/dev\/input\/event1: EV_ABS       ABS_MT_POSITION_X    ([^ ]+)";
-            string patternY = @"^\[.*\] \/dev\/input\/event1: EV_ABS       ABS_MT_POSITION_Y    ([^ ]+)";
+            string patternX = @"^\[.*\]\s+\/dev\/input\/event\d:\s+EV_ABS\s+ABS_MT_POSITION_X\s+([^ ]+)";
+            string patternY = @"^\[.*\]\s+\/dev\/input\/event\d:\s+EV_ABS\s+ABS_MT_POSITION_Y\s+([^ ]+)";
 
             string output = receiver.ToString();
             receiver = null;
@@ -329,7 +352,7 @@ namespace POGO_BOT
                 return new Point(-1, -1);
             }
 
-            string hexX = matchX[matchX.Count-1].Groups[1].ToString();
+            string hexX = matchX[matchX.Count - 1].Groups[1].ToString();
             string hexY = matchY[matchY.Count - 1].Groups[1].ToString();
 
             int intX = Convert.ToInt32(hexX, 16);
@@ -340,6 +363,8 @@ namespace POGO_BOT
             return new Point(intX, intY);
         }
 
+
+        [DebuggerStepThrough]
         private string ExecCommand(string com)
         {
             if (com.StartsWith("adb "))
@@ -371,18 +396,12 @@ namespace POGO_BOT
         {
             ExecCommand("input swipe " + startx + " " + starty + " " + endx + " " + endy + " " + duration);
         }
-
-        [DebuggerStepThrough]
-        private void UpdateStatus(string str)
-        {
-            System.Diagnostics.Debug.WriteLine(str);
-        }
         #endregion
 
         #region Handler
         private async Task HandlePokeStop()
         {
-            Swipe(10, 1000, 500, 1000, 150);
+            Swipe(200, 1000, 700, 1000, 150);
             await Task.Delay(500);
             TapAt(CloseButton);
             await Task.Delay(1000);
@@ -391,7 +410,7 @@ namespace POGO_BOT
 
         private async Task HandleRocketStop()
         {
-            Swipe(10, 1000, 500, 1000, 150);
+            Swipe(200, 1000, 700, 1000, 150);
             await Task.Delay(500);
             TapAt(CloseButton);
             await Task.Delay(5000);
@@ -415,13 +434,13 @@ namespace POGO_BOT
         private async Task HandlePokemon(bool first = true)
         {
             Swipe(480, 1880, 500, 1980, 78);
-            Swipe(500, 1980, 505, 1400, 120);
+            Swipe(500, 1980, 505, 1000, 120);
 
             await Task.Delay(14_000);
             TakeScreenShot();
 
-            Color clr = currBitmap.GetPixel(150, 1500);
-            if (clr.R > 230 & clr.G > 230 && clr.B > 230)
+            Color clr = currBitmap.GetPixel(100,PokemonCaughtOK.Y);
+            if (clr.R > 190 & clr.G > 190 && clr.B > 190)
             {
                 await HandleCaughtPokemon();
             }
@@ -455,12 +474,17 @@ namespace POGO_BOT
 
         private async Task HandleArena()
         {
+            await Task.Delay(5000); //Wait for Raid
             TapAt(ArenaOpenStop);
             await Task.Delay(1000);
-            Swipe(10, 1000, 500, 1000, 150);
+            Swipe(200, 1000, 700, 1000, 150);
             await Task.Delay(500);
             TapAt(CloseButton);
-            await Task.Delay(1000);
+            await Task.Delay(500);
+            TapAt(CloseButton);
+            await Task.Delay(500);
+            TapAt(CloseButton);
+            await Task.Delay(500);
             TapAt(CloseButton);
             await Task.Delay(1000);
             await TossItems();
@@ -560,10 +584,10 @@ namespace POGO_BOT
 
             #endregion
 
-            UpdateStatus("SWIPING TO BERRYS");
-            await SwipeToBerrys();
+            UpdateStatus("SWIPING TO BERRIES");
+            await SwipeToBerries();
 
-            #region Berrys
+            #region BERRIES
 
             list = GetTextList();
             bool foundberry = false;
@@ -605,6 +629,9 @@ namespace POGO_BOT
 
                     await Task.Delay(2000);
                 }
+            } else
+            {
+                UpdateStatus("NO BERRIES FOUND");
             }
             #endregion
 
@@ -647,7 +674,7 @@ namespace POGO_BOT
             return list;
         }
 
-        private async Task SwipeToBerrys()
+        private async Task SwipeToBerries()
         {
             Swipe(400, 2100, 400, 790, 2000);
             await Task.Delay(500);
@@ -687,18 +714,31 @@ namespace POGO_BOT
         private void MoveCam()
         {
             UpdateStatus("MOVING CAMERA");
-            Swipe(100, 1000, 500, 1000, 500);
+            Swipe(200, 400, 800, 400, 700);
         }
 
         private bool TakeScreenShot()
         {
+#if DEBUG
+            adbpath = "..\\..\\..\\adb\\adb.exe";
+#endif
+            string cmd = "/c cls"
+                       + " & pushd " + Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)
+                       + " & cd tmp"
+                       + " & " + adbpath + " shell screencap -p /sdcard/screen.png"
+                       + " & " + adbpath + " pull -p -a /sdcard/screen.png"
+                       + " & " + adbpath + " shell rm /sdcard/screen.png"
+                       + " & ren screen.png " + nPics + ".png"
+                       + " & popd"
+                       + " & exit";
+
             Process MyProcess = new Process
             {
                 StartInfo = new ProcessStartInfo("cmd")
                 {
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    Arguments = "/c start /min /wait GET_SCREENSHOT.bat " + nPics
+                    Arguments = cmd
                 }
             };
 
@@ -720,17 +760,29 @@ namespace POGO_BOT
                 nPics++;
                 try
                 {
-                    File.Delete("tmp\\" + (nPics - 2).ToString() + ".png");
+                    //File.Delete("tmp\\" + (nPics - 2).ToString() + ".png");
                 }
                 catch (Exception) { }
                 return true;
             }
+
+            UpdateStatus("Couldnt take a Screenshot");
             return false;
         }
 
         private async Task<bool> ScanScreenShot()
         {
-            Color clr = currBitmap.GetPixel(144, 2000);
+            Color clr = currBitmap.GetPixel(BallPixel.X, BallPixel.Y);
+
+            //Pokemon
+            if (clr.R > 150 && clr.R > clr.B && clr.R > clr.G)
+            {
+                UpdateStatus("PROB POKEMON IN FIGHT");
+                await HandlePokemon();
+                return true;
+            }
+
+            clr = currBitmap.GetPixel(FacePixel.X, FacePixel.Y);
 
             //PokeStops
             if (clr.R > 65 && clr.R < 80 && clr.G > 65 && clr.G < 80 && clr.B > 65 && clr.B < 80)
@@ -751,27 +803,7 @@ namespace POGO_BOT
                 return true;
             }
 
-            //Arena
-            if (clr.R > 240 && clr.G > 165 && clr.G < 200 && clr.B > 130 && clr.B < 200)
-            {
-                UpdateStatus("PROB ARENA");
-                await HandleArena();
-                nStops++;
-                lblStops.Text = nStops.ToString();
-                return true;
-            }
-
-            clr = currBitmap.GetPixel(920, 1860);
-
-            //Pokemon
-            if (clr.R > clr.B && clr.R > clr.G)
-            {
-                UpdateStatus("PROB POKEMON IN FIGHT");
-                await HandlePokemon();
-                return true;
-            }
-
-            clr = currBitmap.GetPixel(540, 2000);
+            clr = currBitmap.GetPixel(NotificationPixel.X, NotificationPixel.Y);
 
             //Ballon Grunt
             if ((clr.R < 50 && clr.G < 50 && clr.B < 50))
@@ -791,6 +823,26 @@ namespace POGO_BOT
             }
 
             //On Map
+            //if (clr.R > 240 && clr.G > 165 && clr.G < 200 && clr.B > 130 && clr.B < 200)
+            //{
+            //    await HandleMap();
+            //}
+
+            clr = currBitmap.GetPixel(ArenaOpenStop.X, ArenaOpenStop.Y);
+
+            //Arena
+            //if (clr.R > 30 && clr.R < 175 && clr.G > 105 && clr.G < 178 && clr.B > 120 && clr.B < 175)
+            if (clr.R > 170 && clr.R < 200 && clr.G > 170 && clr.G < 200 && clr.B > 170 && clr.B < 200)
+            //if (clr.Equals(Color.FromArgb(172,178,174)))
+            //if (clr.R > 230 && clr.G > 230 && clr.B > 230)
+            {
+                UpdateStatus("PROB ARENA");
+                await HandleArena();
+                nStops++;
+                lblStops.Text = nStops.ToString();
+                return true;
+            }
+
             await HandleMap();
 
             return false;
@@ -802,18 +854,42 @@ namespace POGO_BOT
         private bool Debug()
         {
             //Default Values for A2 Lite (1080x2280)
-            CloseButton = new Point(530, 2000);
-            RandomRocketClick = new Point(500, 1250);
-            DodgePokemon = new Point(90, 250);
-            PokemonCaughtOK = new Point(500, 1500);
-            PokemonCaughtStrips = new Point(900, 1950);
-            PokemonCaughtTransfer = new Point(720, 1760);
-            PokemonCaughtTransferOK = new Point(500, 1250);
-            ArenaOpenStop = new Point(950, 300);
-            OpenItembag = new Point(850, 1800);
-            SellFirstItem = new Point(950, 450);
-            SellItemPlus = new Point(800, 1000);
-            SellItemOK = new Point(500, 1350);
+            //CloseButton = new Point(530, 2000);
+            //RandomRocketClick = new Point(500, 1250);
+            //DodgePokemon = new Point(90, 250);
+            //PokemonCaughtOK = new Point(500, 1500);
+            //PokemonCaughtStrips = new Point(900, 1950);
+            //PokemonCaughtTransfer = new Point(720, 1760);
+            //PokemonCaughtTransferOK = new Point(500, 1250);
+            //ArenaOpenStop = new Point(950, 300);
+            //OpenItembag = new Point(850, 1800);
+            //SellFirstItem = new Point(950, 450);
+            //SellItemPlus = new Point(800, 1000);
+            //SellItemOK = new Point(500, 1350);
+            //FacePixel = new Point(144,2000);
+            //BallPixel = new Point(920, 1860);
+            //NotificationPixel = new Point(540, 2000);
+            //ArenaPixel = new Point(620,620);
+
+            //Default Values for Note 8 Pro (1080x2340)
+            CloseButton = new Point(546, 2210);
+            RandomRocketClick = new Point(354, 946);
+            DodgePokemon = new Point(114, 244);
+            PokemonCaughtOK = new Point(542, 1579);
+            PokemonCaughtStrips = new Point(926, 2173);
+            PokemonCaughtTransfer = new Point(730, 1980);
+            PokemonCaughtTransferOK = new Point(511, 1364);
+            ArenaOpenStop = new Point(932, 285);
+            OpenItembag = new Point(831, 1990);
+            SellFirstItem = new Point(982, 411);
+            SellItemPlus = new Point(800, 1083);
+            SellItemOK = new Point(546, 1410);
+            FacePixel = new Point(120, 2180);
+            BallPixel = new Point(930, 2100);
+            NotificationPixel = new Point(530, 2200);
+            ArenaPixel = new Point(391, 210);
+
+
             ClickAreaTL = new Point(360, 1150);
             ClickAreaBR = new Point(750, 1600);
 

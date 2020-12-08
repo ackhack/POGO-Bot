@@ -48,9 +48,10 @@ namespace POGO_BOT
             // btnPic
             // 
             this.btnPic.Enabled = false;
-            this.btnPic.Location = new System.Drawing.Point(13, 24);
+            this.btnPic.Location = new System.Drawing.Point(10, 20);
+            this.btnPic.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnPic.Name = "btnPic";
-            this.btnPic.Size = new System.Drawing.Size(124, 75);
+            this.btnPic.Size = new System.Drawing.Size(93, 61);
             this.btnPic.TabIndex = 0;
             this.btnPic.Text = "Start/Stop";
             this.btnPic.UseVisualStyleBackColor = true;
@@ -58,29 +59,30 @@ namespace POGO_BOT
             // 
             // pbResult
             // 
-            this.pbResult.Location = new System.Drawing.Point(193, -4);
+            this.pbResult.Location = new System.Drawing.Point(145, -3);
+            this.pbResult.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pbResult.Name = "pbResult";
-            this.pbResult.Size = new System.Drawing.Size(550, 915);
+            this.pbResult.Size = new System.Drawing.Size(412, 743);
             this.pbResult.TabIndex = 1;
             this.pbResult.TabStop = false;
             // 
             // pnlColor
             // 
             this.pnlColor.BackColor = System.Drawing.Color.Maroon;
-            this.pnlColor.Location = new System.Drawing.Point(35, 159);
+            this.pnlColor.Location = new System.Drawing.Point(26, 129);
+            this.pnlColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlColor.Name = "pnlColor";
-            this.pnlColor.Size = new System.Drawing.Size(107, 100);
+            this.pnlColor.Size = new System.Drawing.Size(80, 81);
             this.pnlColor.TabIndex = 2;
             this.pnlColor.DoubleClick += new System.EventHandler(this.PnlColor_DoubleClick);
             // 
             // cbToss
             // 
             this.cbToss.AutoSize = true;
-            this.cbToss.Checked = true;
-            this.cbToss.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbToss.Location = new System.Drawing.Point(13, 331);
+            this.cbToss.Location = new System.Drawing.Point(10, 269);
+            this.cbToss.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbToss.Name = "cbToss";
-            this.cbToss.Size = new System.Drawing.Size(145, 21);
+            this.cbToss.Size = new System.Drawing.Size(109, 17);
             this.cbToss.TabIndex = 3;
             this.cbToss.Text = "Toss (not reliable)";
             this.cbToss.UseVisualStyleBackColor = true;
@@ -88,44 +90,49 @@ namespace POGO_BOT
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 381);
+            this.label1.Location = new System.Drawing.Point(10, 310);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 17);
+            this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Pokemons: ";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 416);
+            this.label2.Location = new System.Drawing.Point(10, 338);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 17);
+            this.label2.Size = new System.Drawing.Size(65, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "PokeStops: ";
             // 
             // lblMons
             // 
             this.lblMons.AutoSize = true;
-            this.lblMons.Location = new System.Drawing.Point(102, 381);
+            this.lblMons.Location = new System.Drawing.Point(76, 310);
+            this.lblMons.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMons.Name = "lblMons";
-            this.lblMons.Size = new System.Drawing.Size(16, 17);
+            this.lblMons.Size = new System.Drawing.Size(13, 13);
             this.lblMons.TabIndex = 6;
             this.lblMons.Text = "0";
             // 
             // lblStops
             // 
             this.lblStops.AutoSize = true;
-            this.lblStops.Location = new System.Drawing.Point(102, 416);
+            this.lblStops.Location = new System.Drawing.Point(76, 338);
+            this.lblStops.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStops.Name = "lblStops";
-            this.lblStops.Size = new System.Drawing.Size(16, 17);
+            this.lblStops.Size = new System.Drawing.Size(13, 13);
             this.lblStops.TabIndex = 7;
             this.lblStops.Text = "0";
             // 
             // btnInit
             // 
-            this.btnInit.Location = new System.Drawing.Point(16, 471);
+            this.btnInit.Location = new System.Drawing.Point(12, 383);
+            this.btnInit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnInit.Name = "btnInit";
-            this.btnInit.Size = new System.Drawing.Size(142, 81);
+            this.btnInit.Size = new System.Drawing.Size(106, 66);
             this.btnInit.TabIndex = 8;
             this.btnInit.Text = "Init Screen";
             this.btnInit.UseVisualStyleBackColor = true;
@@ -135,9 +142,10 @@ namespace POGO_BOT
             // 
             this.lblInstruct.AutoSize = true;
             this.lblInstruct.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.lblInstruct.Location = new System.Drawing.Point(363, 76);
+            this.lblInstruct.Location = new System.Drawing.Point(272, 62);
+            this.lblInstruct.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblInstruct.Name = "lblInstruct";
-            this.lblInstruct.Size = new System.Drawing.Size(191, 39);
+            this.lblInstruct.Size = new System.Drawing.Size(155, 31);
             this.lblInstruct.TabIndex = 9;
             this.lblInstruct.Text = "Instructions";
             this.lblInstruct.Visible = false;
@@ -145,9 +153,10 @@ namespace POGO_BOT
             // btninstruct
             // 
             this.btninstruct.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btninstruct.Location = new System.Drawing.Point(193, 76);
+            this.btninstruct.Location = new System.Drawing.Point(145, 62);
+            this.btninstruct.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btninstruct.Name = "btninstruct";
-            this.btninstruct.Size = new System.Drawing.Size(164, 74);
+            this.btninstruct.Size = new System.Drawing.Size(123, 60);
             this.btninstruct.TabIndex = 10;
             this.btninstruct.Text = "OK";
             this.btninstruct.UseVisualStyleBackColor = true;
@@ -157,9 +166,10 @@ namespace POGO_BOT
             // btnRedo
             // 
             this.btnRedo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.btnRedo.Location = new System.Drawing.Point(193, 159);
+            this.btnRedo.Location = new System.Drawing.Point(145, 129);
+            this.btnRedo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRedo.Name = "btnRedo";
-            this.btnRedo.Size = new System.Drawing.Size(164, 74);
+            this.btnRedo.Size = new System.Drawing.Size(123, 60);
             this.btnRedo.TabIndex = 11;
             this.btnRedo.Text = "REDO";
             this.btnRedo.UseVisualStyleBackColor = true;
@@ -170,18 +180,19 @@ namespace POGO_BOT
             // 
             this.lblRelease.AutoSize = true;
             this.lblRelease.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.lblRelease.Location = new System.Drawing.Point(198, 236);
+            this.lblRelease.Location = new System.Drawing.Point(148, 192);
+            this.lblRelease.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRelease.Name = "lblRelease";
-            this.lblRelease.Size = new System.Drawing.Size(132, 29);
+            this.lblRelease.Size = new System.Drawing.Size(102, 25);
             this.lblRelease.TabIndex = 12;
             this.lblRelease.Text = "lblRelease";
             this.lblRelease.Visible = false;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(886, 940);
+            this.ClientSize = new System.Drawing.Size(664, 764);
             this.Controls.Add(this.lblRelease);
             this.Controls.Add(this.btnRedo);
             this.Controls.Add(this.btninstruct);
@@ -195,6 +206,7 @@ namespace POGO_BOT
             this.Controls.Add(this.pnlColor);
             this.Controls.Add(this.pbResult);
             this.Controls.Add(this.btnPic);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pbResult)).EndInit();
