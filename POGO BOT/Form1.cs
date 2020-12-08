@@ -32,7 +32,6 @@ namespace POGO_BOT
         private string adbpath;
         private readonly bool canInit = false;
         private bool canRun = false;
-
         private int initButton = 0;
 
         private Point CloseButton;
@@ -100,7 +99,8 @@ namespace POGO_BOT
             try
             {
 #if DEBUG
-                adbpath = @"\\profiles02\userdata$\fuerbach\Documents\Repos\pogo-bot\POGO BOT\adb\adb.exe";
+                //WorkPath adbpath = @"\\profiles02\userdata$\fuerbach\Documents\Repos\pogo-bot\POGO BOT\adb\adb.exe";
+                //HomePath adbpath = @"C:\adb\adb.exe"
 #endif
                 if (adbpath == null)
                 {
@@ -135,6 +135,7 @@ namespace POGO_BOT
             try
             {
 #if DEBUG
+                //Home via Wifi
                 //Process MyProcess = new Process
                 //{
                 //    StartInfo = new ProcessStartInfo("cmd", "/c adb connect 192.168.178.109:5555")
@@ -170,6 +171,25 @@ namespace POGO_BOT
 
         private void BtnPic_Click(object sender, EventArgs e)
         {
+            ToggleRunning();
+        }
+        private void BtnInit_Click(object sender, EventArgs e)
+        {
+            StartInit();
+        }
+        private void Btninstruct_Click(object sender, EventArgs e)
+        {
+            InitStep();
+        }
+        private void btnRedo_Click(object sender, EventArgs e)
+        {
+            lblRelease.Text = "Waiting for new Input";
+            StartListeningTouch();
+            UpdateStatus("Restarted TouchInput");
+        }
+
+        private void ToggleRunning()
+        {
             btnInit.Enabled = false;
             if (!canRun)
             {
@@ -182,7 +202,7 @@ namespace POGO_BOT
             if (running)
                 ScanMap();
         }
-        private void BtnInit_Click(object sender, EventArgs e)
+        private void StartInit()
         {
             if (!canInit)
             {
@@ -204,7 +224,7 @@ namespace POGO_BOT
             lblInstruct.Text = "Please start a Pokemon Fight \nand press the Flee Button";
             StartListeningTouch();
         }
-        private void Btninstruct_Click(object sender, EventArgs e)
+        private void InitStep()
         {
             Point ret = ReadLastTouch();
             if (ret.X == -1)
@@ -294,12 +314,6 @@ namespace POGO_BOT
                     return;
             }
             StartListeningTouch();
-        }
-        private void btnRedo_Click(object sender, EventArgs e)
-        {
-            lblRelease.Text = "Waiting for new Input";
-            StartListeningTouch();
-            UpdateStatus("Restarted TouchInput");
         }
 
         [DebuggerStepThrough]
@@ -720,7 +734,7 @@ namespace POGO_BOT
         private bool TakeScreenShot()
         {
 #if DEBUG
-            adbpath = "..\\..\\..\\adb\\adb.exe";
+            //WorkPath adbpath = "..\\..\\..\\adb\\adb.exe";
 #endif
             string cmd = "/c cls"
                        + " & pushd " + Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)
@@ -760,7 +774,7 @@ namespace POGO_BOT
                 nPics++;
                 try
                 {
-                    //File.Delete("tmp\\" + (nPics - 2).ToString() + ".png");
+                    File.Delete("tmp\\" + (nPics - 2).ToString() + ".png");
                 }
                 catch (Exception) { }
                 return true;
